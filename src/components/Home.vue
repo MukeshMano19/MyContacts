@@ -9,7 +9,7 @@
       <form class="form-inline" v-if="contacts.length">
         <i class="fas fa-user" style="font-size:16px;color:#ff4e5a"></i>
         <div class="btn-group">
-          <button class="btn btn-disabled">{{logeedInUser.id ? logeedInUser.name : ''}}</button>
+          <button class="btn btn-disabled">{{loggedInUser.id ? loggedInUser.name : ''}}</button>
           <button
             type="button"
             class="btn btn-light dropdown-toggle dropdown-toggle-split"
@@ -20,7 +20,7 @@
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu">
-            <div v-for="(i,idx) in contacts" :key="i.id" v-show="logeedInUser.id != i.id">
+            <div v-for="(i,idx) in contacts" :key="i.id" v-show="loggedInUser.id != i.id">
               <span class="dropdown-item users" @click="setLoggedInUser(i)">
                 <i class="fas fa-user-circle pr-2"></i>
                 {{i.name}}
@@ -40,10 +40,11 @@
 
     <div id="nav-drawer" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
-      <chat></chat>
+      <chat class="chat"></chat>
     </div>
     <div class="empty-handle" v-if="!contacts.length">
-        <div>
+        <div class="flex-container">
+          <div>
           <img src="../assets/chat.jpg" width="300" />
           <div>Add new contacts to explore!</div>
           <div class="add-contact-btn mt-3">
@@ -54,11 +55,12 @@
               data-toggle="modal"
               data-target="#contactForm"
             >Add contact</button>
+          </div>
         </div>
       </div>
     </div>
     <div class="main-content" v-if="contacts.length">
-      <contact-list class="list" :contacts="filteredContacts" v-if="contacts.length > 1"></contact-list>
+      <contact-list class="list" @openDrawer="openNav()" :contacts="filteredContacts" v-if="contacts.length > 1"></contact-list>
       <chat class="chat"></chat>
     </div>
   </div>
@@ -94,11 +96,11 @@ export default {
     }
   },
   computed: {
-    ...mapState(["contacts", "logeedInUser"]),
+    ...mapState(["contacts", "loggedInUser"]),
     filteredContacts() {
       return this.contacts.filter(c => {
         return (
-          this.logeedInUser.id != c.id &&
+          this.loggedInUser.id != c.id &&
           c.name.toLowerCase().match(this.searchText.toLowerCase())
         );
       });
@@ -143,20 +145,16 @@ export default {
   background: #f1f0eb;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 60px;
+  padding-top: 40px;
+  display: none;
 }
 
 .sidenav a {
-  padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
   color: #818181;
   display: block;
   transition: 0.3s;
-}
-
-.sidenav a:hover {
-  color: #f1f1f1;
 }
 
 .sidenav .closebtn {
@@ -197,6 +195,10 @@ export default {
   }
   .main-content .chat {
     display: none;
+  }
+
+  .sidenav{
+    display: unset;
   }
 }
 

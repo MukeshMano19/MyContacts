@@ -21,18 +21,24 @@
         <div style="font-size:10px">{{selectedChat.phone}}</div>
         <div style="height:0.5px;background: #ff4e5a;width:100%" class="mt-1 mb-4"></div>
         <div class="conversions-body">
-          <div class="conversions" v-for="i in 8" :key="i">
-            <div class="to">
-              <span class="message">{{selectedChat.phone}}</span>
+          <div class="conversions" v-for="i in currentConversations" :key="i.timestamp">
+            <div class="from" v-if="loggedInUser.id == i.userId">
+              <div>
+              <span class="message">{{i.message}}</span>
+              <div class="time">{{getDateFormat(i.timestamp)}}</div>
+              </div>
             </div>
-            <div class="from">
-              <span class="message">{{selectedChat.phone}}</span>
-            </div>
+            <div class="to" v-else>
+<div>
+              <span class="message">{{i.message}}</span>
+              <div class="time">{{getDateFormat(i.timestamp)}}</div>
+              </div>            </div>
           </div>
         </div>
       </div>
       <div class="text-field input-group mb-3">
         <input
+          v-model="message"
           type="text"
           class="form-control"
           placeholder="Send message"
@@ -40,7 +46,12 @@
           style="border: 1px solid #ff4e5a"
         />
         <div class="input-group-append">
-          <button class="btn" type="button" style="background: #ff4e5a;color:white">
+          <button
+            class="btn"
+            type="button"
+            style="background: #ff4e5a;color:white"
+            @click="send(message)"
+          >
             Send
             <i class="fas fa-paper-plane"></i>
           </button>
@@ -51,11 +62,39 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations, mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      message: ""
+    };
+  },
+  methods: {
+    ...mapMutations(["sendMessage"]),
+    send(message) {
+      if (!message) return;
+
+      let msg = {
+        timestamp: Date.now(),
+        message: message,
+        userId: this.loggedInUser.id
+      };
+      this.sendMessage(msg);
+      this.message = "";
+    },
+    getDateFormat(ts) {
+      var ts_ms = ts 
+      var date_ob = new Date(ts_ms);
+      var hours = ("0" + date_ob.getHours()).slice(-2);
+      var minutes = ("0" + date_ob.getMinutes()).slice(-2);
+
+      return  hours + ":" + minutes
+    }
+  },
   computed: {
-    ...mapState(["selectedChat", "contacts"])
+    ...mapState(["selectedChat", "contacts", "messagesHub", "loggedInUser"]),
+    ...mapGetters(["currentConversations"]),
   }
 };
 </script>
@@ -96,18 +135,23 @@ export default {
   display: flex;
   flex-wrap: wrap;
 }
+.conversions .time {
+font-size: 9px;
+  margin-top: 10px;
+
+}
 .conversions .to {
   flex: 100%;
   text-align: left;
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .conversions .from {
   flex: 100%;
   text-align: right;
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 15px;
   margin-right: 15px;
 }
 .conversions .to .message {

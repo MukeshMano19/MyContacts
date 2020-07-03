@@ -30,18 +30,18 @@
               {{i.address}}
             </div>
           </div>
-          <div class="card-action">
+          <div class="card-action mt-3">
             <div class="edit">
               <button
                 type="button"
-                class="btn btn-sm"
+                class="btn btn-sm btn-outline-light btn-block"
                 data-toggle="modal"
                 data-target="#contactForm"
                 @click="setSelectedContact(i)"
               >Edit</button>
             </div>
-            <div class="start-chat">
-              <button type="submit" class="btn btn-sm" @click="setSelectedChat(i)">
+            <div class="start-chat ml-1">
+              <button type="submit" class="btn btn-sm btn-outline-light btn-clock" @click="startChat(i)">
                 Start Chat
                 <i class="fas fa-comments"></i>
               </button>
@@ -54,22 +54,34 @@
   </div>
 </template>
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapState, mapGetters } from "vuex";
 export default {
   props: {
     contacts: {
       type: Array
-    }
+    },
   },
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
-    ...mapState(['selectedChat'])
+    ...mapState(["selectedChat"]),
+    ...mapGetters(["checkUserConversation"])
   },
   methods: {
-    ...mapMutations(["setSelectedContact", "setSelectedChat"])
+    async startChat(user) {
+      var isAlreadyMessaged = await this.checkUserConversation(user.id);
+      if (!isAlreadyMessaged) {
+        this.createNewConversation(user);
+      }
+      this.setSelectedChat(user);
+      this.$emit("openDrawer")
+    },
+    ...mapMutations([
+      "setSelectedContact",
+      "setSelectedChat",
+      "createNewConversation"
+    ])
   }
 };
 </script>
@@ -121,13 +133,35 @@ export default {
 .info .c-name {
   font-size: 16px;
   font-weight: 600;
+  text-transform: uppercase;
 }
 .info .other-info {
   font-size: 12px;
+  font-style: italic;
+  font-weight: 400;
 }
 
 .other-info i {
   font-size: 9px;
+}
+
+@media only screen and (max-width: 768px) {
+  .contact-list .card-body .profile-img {
+  flex: 30%;
+  max-width: 30%;
+}
+.contact-list .card-body .info {
+  flex: 70%;
+  max-width: 70%;
+}
+.card-action .edit {
+  flex: 50%;
+  max-width: 50%;
+}
+.card-action .start-chat {
+  flex: 50%;
+  max-width: 50%;
+}
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1200px) {

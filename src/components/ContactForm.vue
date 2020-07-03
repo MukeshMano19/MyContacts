@@ -110,11 +110,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(["selectedContact"]),
+    ...mapState(["selectedContact","contacts"]),
     ...mapGetters(["getId"])
   },
   methods: {
-    ...mapMutations(["addNewContact", "updateContact", "setSelectedContact"]),
+    ...mapMutations(["addNewContact", "updateContact", "setSelectedContact","setLoggedInUser"]),
     save(data) {
       if (!document.getElementById("contact_form").reportValidity()) {
         return;
@@ -124,22 +124,23 @@ export default {
         this.updateContact(data);
       } else {
         data.id = this.getId;
+        if(this.contacts && !this.contacts.length) this.setLoggedInUser(data)
+
         this.addNewContact(data);
       }
 
       document.getElementById("close-btn").click();
-      this.close()
+      this.close();
     },
     close() {
-     this.setSelectedContact({});
-     this.contact = {};
+      this.setSelectedContact({});
+      this.contact = {};
     }
   },
   watch: {
-    selectedContact(v) {      
+    selectedContact(v) {
       this.contact = v;
     }
   }
 };
-
 </script>
