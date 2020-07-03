@@ -1,17 +1,21 @@
 <template>
   <div class="action-bar my-3">
     <div class="search-field input-group flex-nowrap">
-      <div class="input-group-prepend">
+      <div class="input-group-prepend" style="border: 1px solid #ff4e5a">
         <span class="input-group-text" id="addon-wrapping">
           <i class="fas fa-search"></i>
         </span>
       </div>
       <input
+        v-model="searchText"
         type="text"
         class="form-control"
         placeholder="Search..."
         aria-label="Search..."
         aria-describedby="addon-wrapping"
+        style="border: 1px solid #ff4e5a"
+        @input="doSearch(searchText)"
+        clearable
       />
     </div>
     <div class="add-contact-btn">
@@ -20,6 +24,20 @@
   </div>
 </template>
 
+<script>
+export default {
+  data(){
+    return {
+      searchText: ""
+    }
+  },
+  methods:{
+    doSearch(v){
+      this.$emit("setSearch",v)
+    }
+  }
+}
+</script>
 
 <style>
 .action-bar {

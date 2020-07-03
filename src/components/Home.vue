@@ -29,7 +29,7 @@
         <i class="fas fa-comments pl-4 navbar-chat" @click="openNav()"></i>
       </form>
     </nav>
-    <action-bar></action-bar>
+    <action-bar @setSearch="searchText = $event"></action-bar>
     <contact-form></contact-form>
 
     <div id="nav-drawer" class="sidenav">
@@ -38,7 +38,7 @@
     </div>
 
     <div class="main-content">
-      <contact-list class="list"></contact-list>
+      <contact-list class="list" :contacts="filteredContacts"></contact-list>
       <chat class="chat"></chat>
     </div>
   </div>
@@ -49,6 +49,7 @@ import ActionBar from "./ActionBar";
 import ContactList from "./ContactList";
 import ContactForm from "./ContactForm";
 import Chat from "./Chat";
+import {mapState} from "vuex";
 
 export default {
   name: "Home",
@@ -59,7 +60,9 @@ export default {
     Chat
   },
   data() {
-    return {};
+    return {
+      searchText: ''
+    };
   },
   methods: {
     openNav() {
@@ -67,6 +70,14 @@ export default {
     },
     closeNav() {
       document.getElementById("nav-drawer").style.width = "0";
+    }
+  },
+  computed: {
+    ...mapState(["contacts"]),
+    filteredContacts(){
+      return this.contacts.filter(c => {
+        return c.name.toLowerCase().match(this.searchText.toLowerCase());
+      })
     }
   }
 };
