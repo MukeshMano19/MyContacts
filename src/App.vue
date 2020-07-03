@@ -4,6 +4,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  beforeCreate(){
+    this.$store.dispatch("initIDB");
+  }
+}
+</script>
+
 <style>
 html,
 body {

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import idbs from '../services/indexDB'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ export default new Vuex.Store({
         selectedContact: {},
         selectedChat: {},
         messagesHub: [],
-        currentConv: null
+        currentConv: null,
+        idbTables: ['messagesHub', 'contacts']
     },
     getters: {
         getId: (state) => {
@@ -59,6 +61,7 @@ export default new Vuex.Store({
                     conversationWith: []
                 }
                 state.messagesHub.push(data)
+                idbs.saveData("messagesHub", data)
             }
         },
         createNewConversation(state, user) {
@@ -73,6 +76,9 @@ export default new Vuex.Store({
             let index = state.messagesHub.indexOf(loggedInUser)
 
             Vue.set(state.messagesHub[index], 'conversationWith', loggedInUser.conversationWith);
+
+            // Save data in IDB
+            idbs.updateTable("messagesHub", loggedInUser)
         },
 
         sendMessage(state, data) {
@@ -86,25 +92,65 @@ export default new Vuex.Store({
             Vue.set(logUser.conversationWith[midx], 'messages', found.messages);
             let uidx = state.messagesHub.indexOf(logUser)
             Vue.set(state.messagesHub[uidx], 'conversationWith', logUser.conversationWith);
-            // state.currentConv = fromMessages(state).concat(toMessages(state))
             state.currentConv = [...new Set([...fromMessages(state), ...toMessages(state)])];
+
+            // Save data in IDB
+            idbs.updateTable("messagesHub", logUser)
         },
         setSelectedContact(state, contact) {
             state.selectedContact = contact
         },
         setSelectedChat(state, chat) {
             state.selectedChat = chat
-                // state.currentConv = fromMessages(state).concat(toMessages(state))
             state.currentConv = [...new Set([...fromMessages(state), ...toMessages(state)])];
         },
         addNewContact(state, contact) {
             state.contacts.push(contact)
+            idbs.saveData("contacts", contact)
         },
         updateContact(state, contact) {
             var foundIndex = state.contacts.findIndex(x => x.id == contact.id);
             state.contacts[foundIndex] = contact;
-        }
+            idbs.updateTable("contacts", contact)
+        },
+        setState: (state, {
+            tableName,
+            data
+        }) => {
+            console.log("retriving data from IDB:", tableName, data)
+            state[tableName] = data
+        },
     },
+    actions: {
+        initIDB({
+            dispatch
+        }) {
+            return new Promise((resolve) => {
+                idbs.open(dispatch('refreshData'))
+                resolve()
+            });
+        },
+        refreshData({
+            commit,
+            state
+        }) {
+            return new Promise((resolve) => {
+                state.idbTables.forEach(tableName => {
+                    idbs.fetchData(tableName, function(data) {
+                        if (data.length && tableName == "contacts") {
+                            let user = data[0];
+                            commit("setLoggedInUser", user)
+                        }
+                        commit("setState", {
+                            tableName,
+                            data
+                        })
+                    })
+                })
+                resolve()
+            });
+        },
+    }
 })
 
 const loggedInUserData = (state) => {

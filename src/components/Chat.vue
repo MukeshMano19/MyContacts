@@ -44,6 +44,7 @@
           placeholder="Send message"
           aria-describedby="basic-addon2"
           style="border: 1px solid #ff4e5a"
+          @keyup.enter="send(message)"
         />
         <div class="input-group-append">
           <button

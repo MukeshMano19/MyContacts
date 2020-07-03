@@ -3,8 +3,7 @@
     <div v-for="i in contacts" :key="i.id">
       <div
         class="card-body"
-        :style="{'background': selectedChat.id == i.id ? '#ff97a0' : '',
-      'color': selectedChat.id == i.id ? '' : ''
+        :style="{'background': selectedChat.id == i.id ? '#fd8d97' : ''
       }"
       >
         <div class="profile-img">
