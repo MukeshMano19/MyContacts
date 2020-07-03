@@ -11,7 +11,7 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title cusColor" id="exampleModalLabel">
+          <h5 class="modal-title" id="exampleModalLabel">
             <b>New Contact</b>
           </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -92,7 +92,7 @@
               <button
                 type="submit"
                 class="btn"
-                style="background:green;color:white"
+                style="background:#322348;color:white"
                 @click="save(contact)"
               >Save Contact</button>
             </div>
@@ -145,3 +145,11 @@ export default {
   }
 };
 </script>
+<style>
+.modal-title {
+  color: #322348 !important;
+}
+.modal-body label {
+  font-size: 14px;
+}
+</style>

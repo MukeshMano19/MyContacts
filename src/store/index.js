@@ -22,8 +22,6 @@ export default new Vuex.Store({
             if (state.messagesHub && state.messagesHub.length) {
                 var logUser = loggedInUserData(state)
 
-                console.log(logUser)
-
                 var found = logUser.conversationWith.find(m => {
                     return m.userId == userId
                 })
@@ -49,7 +47,6 @@ export default new Vuex.Store({
     },
     mutations: {
         setLoggedInUser(state, user) {
-            console.log("Setting logged")
             state.loggedInUser = user
             state.selectedChat = {}
 
@@ -66,7 +63,6 @@ export default new Vuex.Store({
         },
         createNewConversation(state, user) {
             var loggedInUser = loggedInUserData(state)
-            console.log(loggedInUser)
             let data = {
                 userId: user.id,
                 messages: []

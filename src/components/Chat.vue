@@ -1,18 +1,17 @@
 <template>
-  <div class="chat card" :style="{'border': contacts.length > 1 ? '1px solid #ff4e5a' : 'none'}">
+  <div class="chat card" :style="{'border': contacts.length > 1 ? '1px solid #563d7c' : 'none'}">
     <div class="flex-container" v-if="!selectedChat.id">
       <div>
         <img src="../assets/chat.jpg" width="300" />
         <div>{{contacts.length == 1 ? 'Add one more contact to start chating!':'Select contact to start chating!'}}</div>
-        <div class="add-contact-btn mt-4" v-if="contacts.length == 1">
-          <button
-            style="border: 1px solid #ff4e5a"
-            class="btn my-2 my-sm-0"
-            type="submit"
-            data-toggle="modal"
-            data-target="#contactForm"
-          >Add contact</button>
-        </div>
+                <div class="add-contact-btn mt-3" v-if="contacts.length == 1">
+            <button
+              class="btn add-new-btn my-2 my-sm-0"
+              type="submit"
+              data-toggle="modal"
+              data-target="#contactForm"
+            >Add New Contact</button>
+          </div>
         <div class="close-nav-bar-btn mt-3">
           <button
             style="border: 1px solid #ff4e5a"
@@ -25,9 +24,9 @@
     </div>
     <div class="card-body" v-else>
       <div class="message-body">
-        <div style="font-weight:600;text-transform:uppercase">{{selectedChat.name}}</div>
+        <div class="cName">{{selectedChat.name}}</div>
         <div style="font-size:10px">{{selectedChat.phone}}</div>
-        <div style="height:0.5px;background: #ff4e5a;width:100%" class="mt-1 mb-4"></div>
+        <div style="height:0.5px;background: #322348;width:100%" class="mt-1 mb-4"></div>
         <div id="chats" class="conversions-body">
           <div  class="conversions" v-for="i in currentConversations" :key="i.timestamp">
             <div class="from" v-if="loggedInUser.id == i.userId">
@@ -52,14 +51,14 @@
           class="form-control"
           placeholder="Send message"
           aria-describedby="basic-addon2"
-          style="border: 1px solid #ff4e5a"
+          style="border: 1px solid #322348"
           @keyup.enter="send(message)"
         />
         <div class="input-group-append">
           <button
             class="btn"
             type="button"
-            style="background: #ff4e5a;color:white"
+            style="background: #322348;color:white"
             @click="send(message)"
           >
             Send
@@ -71,7 +70,7 @@
         <button
           class="btn btn-block"
           type="button"
-          style="background: #ff4e5a;color:white"
+          style="background: #322348;color:white"
           @click="$emit('closeNavBar')"
         >Close</button>
       </div>
@@ -120,14 +119,15 @@ export default {
 <style>
 .chat.card {
   height: 100%;
-  min-height: 600px;
+  min-height: 580px;
   border-radius: 0px;
+  margin-left: 15px;
 }
 
 .flex-container {
   display: flex;
   height: 100%;
-  min-height: 600px;
+  min-height: 580px;
   justify-content: center;
   align-items: center;
 }
@@ -146,8 +146,14 @@ export default {
   flex: 100%;
 }
 
+.message-body .cName{
+  font-weight:600;
+  text-transform:uppercase;
+  color: "#322348"
+}
+
 .conversions-body {
-  height: 420px;
+  height: 400px;
   overflow-y: auto;
 }
 
@@ -180,7 +186,7 @@ export default {
   border-bottom-left-radius: 0px;
 }
 .conversions .from .message {
-  background: #ff4e5a;
+  background: #322348;
   color: white;
   padding: 10px;
   border-radius: 35px;

@@ -2,20 +2,19 @@
   <div class="container">
     <nav class="navbar">
       <span class="app-name navbar-brand mb-0 h1">
-        <i class="fas fa-address-book" style="font-size:16px;"></i>
+        <i class="fas fa-address-book"></i>
         MyContacts
       </span>
 
       <form class="form-inline" v-if="contacts.length">
-        <i class="fas fa-user" style="font-size:16px;color:#ff4e5a"></i>
+        <i class="fas fa-user" style="font-size:14px;"></i>
         <div class="btn-group">
-          <button class="btn btn-disabled">{{loggedInUser.id ? loggedInUser.name : ''}}</button>
+          <button class="btn topbar-btn">{{loggedInUser.id ? loggedInUser.name : ''}}</button>
           <button
             type="button"
-            class="btn btn-light dropdown-toggle dropdown-toggle-split"
+            class="btn topbar-btn  dropdown-toggle dropdown-toggle-split"
             data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
+           
           >
             <span class="sr-only">Toggle Dropdown</span>
           </button>
@@ -49,12 +48,11 @@
           <div>Add new contacts to explore!</div>
           <div class="add-contact-btn mt-3">
             <button
-              style="border: 1px solid #ff4e5a"
-              class="btn my-2 my-sm-0"
+              class="btn add-new-btn my-2 my-sm-0"
               type="submit"
               data-toggle="modal"
               data-target="#contactForm"
-            >Add contact</button>
+            >Add New Contact</button>
           </div>
         </div>
       </div>
@@ -117,14 +115,25 @@ export default {
 </script>
 
 <style>
+.navbar{
+  background: #322348;
+  color: white;
+}
+
+.topbar-btn {
+  background: #322348;
+  color: white;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
 .container {
   background: white;
   min-height: calc(100vh-0px) !important;
 }
 .app-name {
   font-weight: 600;
-  color: #ff4e5a !important;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .main-content {
@@ -134,12 +143,12 @@ export default {
 }
 
 .main-content .list {
-  flex: 40%;
-  max-width: 40%;
-}
-.main-content .chat {
   flex: 60%;
   max-width: 60%;
+}
+.main-content .chat {
+  flex: 40%;
+  max-width: 40%;
 }
 
 .sidenav {
@@ -185,6 +194,11 @@ export default {
   height: 600px;
   justify-content: center;
   align-items: center;
+}
+
+.add-new-btn{
+  background:#322348;color:white;
+  letter-spacing: 1px;
 }
 
 @media only screen and (max-width: 768px) {

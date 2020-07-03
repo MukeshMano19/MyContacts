@@ -1,7 +1,7 @@
 <template>
   <div class="action-bar my-3">
     <div class="search-field input-group flex-nowrap">
-      <div class="input-group-prepend" style="border: 1px solid #ff4e5a">
+      <div class="input-group-prepend">
         <span class="input-group-text" id="addon-wrapping">
           <i class="fas fa-search"></i>
         </span>
@@ -13,13 +13,14 @@
         placeholder="Search..."
         aria-label="Search..."
         aria-describedby="addon-wrapping"
-        style="border: 1px solid #ff4e5a"
         @input="doSearch(searchText)"
         clearable
       />
     </div>
     <div class="add-contact-btn">
-      <button style="border: 1px solid #ff4e5a" class="btn my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#contactForm">Add contact</button>
+      <button class="add-btn btn my-2 my-sm-0" type="submit" data-toggle="modal" data-target="#contactForm">
+        <i class="fas fa-plus" style="font-size:14px"></i>
+        Add Contact</button>
     </div>
   </div>
 </template>
@@ -53,9 +54,15 @@ export default {
 }
 
 .action-bar .add-contact-btn {
-  flex: 10%;
-  max-width: 10%;
+  flex: 12%;
+  max-width: 12%;
   margin-left: 10px;
+
+}
+
+.action-bar .add-contact-btn .add-btn {
+  background: #563d7c;
+  color: white;
 }
 
 @media only screen and (max-width: 768px) {
@@ -70,6 +77,7 @@ export default {
   .action-bar .add-contact-btn {
     flex: 40%;
     max-width: 40%;
+    margin-top: 10px;
   }
 }
 
@@ -93,8 +101,8 @@ export default {
     max-width: 60%;
   }
   .action-bar .add-contact-btn {
-    flex: 12%;
-    max-width: 12%;
+    flex: 15%;
+    max-width: 15%;
   }
 }
 </style>

@@ -1,58 +1,56 @@
 <template>
   <div class="contact-list">
-    <div v-for="i in contacts" :key="i.id">
-      <div
-        class="card-body"
-        :style="{'background': selectedChat.id == i.id ? '#fd8d97' : ''
-      }"
-      >
-        <div class="profile-img">
-          <img src="../assets/user.svg" width="70" />
-        </div>
-        <div class="info">
-          <div class="c-name">{{i.name}}</div>
-          <div class="other-info">
-            <div>
-              <i class="fas fa-mobile-alt"></i>
-              {{i.phone}}
-            </div>
-            <div>
-              <i class="fas fa-envelope"></i>
-              {{i.email}}
-            </div>
-            <div>
-              <i class="fas fa-building"></i>
-              {{i.company}}
-            </div>
-            <div>
-              <i class="fas fa-address-book"></i>
-              {{i.address}}
-            </div>
-          </div>
-          <div class="card-action mt-3">
-            <div class="edit">
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-light btn-block"
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" style="max-width:40px;width:40px"></th>
+            <th scope="col">Details</th>
+            <th class="action-clmn">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="i in contacts" :key="i.id">
+            <th>
+              <img src="../assets/user.svg" width="30" />
+            </th>
+            <td class="info">
+              <div class="c-name">{{i.name}}</div>
+              <div class="other-info">
+                <div>
+                  <div>
+                  <i class="fas fa-mobile-alt"></i>
+                  {{i.phone}}
+                  </div>
+                  <div>
+                    <i class="fas fa-envelope"></i>
+                    {{i.email}}
+                  </div>
+                </div>
+                <div>
+                  <i class="fas fa-building"></i>
+                  {{i.address}}
+                </div>
+              </div>
+            </td>
+            <td class="action-clmn">
+              <div class="fbox">
+                <div style="flex:50%">
+              <i
+                class="fas fa-user-edit"
                 data-toggle="modal"
                 data-target="#contactForm"
                 @click="setSelectedContact(i)"
-              >Edit</button>
-            </div>
-            <div class="start-chat ml-1">
-              <button
-                type="submit"
-                class="btn btn-sm btn-outline-light btn-block"
-                @click="startChat(i)"
-              >
-                Start Chat
-                <i class="fas fa-comments"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div style="width:100%;height:1px;background:white"></div>
+              ></i>
+              </div>
+              <div style="flex:50%">
+              <i class="fas fa-comments" @click="startChat(i)"></i>
+              </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -91,46 +89,19 @@ export default {
 
 <style>
 .contact-list {
-  background: #ff4e5a;
   max-height: 600px;
   overflow-y: auto;
 }
-.contact-list .card {
-  border-radius: 0px;
+
+.action-clmn {
+  text-align: center;
 }
-.contact-list .card-body {
+.action-clmn .fbox {
   display: flex;
-  color: white;
+  flex-direction: row wrap;
+}
+.action-clmn i {
   cursor: pointer;
-}
-
-.contact-list .card-body .profile-img {
-  flex: 25%;
-  max-width: 25%;
-}
-.contact-list .card-body .info {
-  flex: 70%;
-  max-width: 70%;
-}
-
-.contact-list .card-body .card-action {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding-top: 5px;
-}
-
-.card-action button {
-  color: white;
-}
-
-.card-action .edit {
-  flex: 20%;
-  max-width: 20%;
-}
-.card-action .start-chat {
-  flex: 40%;
-  max-width: 40%;
 }
 
 .info .c-name {
@@ -140,8 +111,10 @@ export default {
 }
 .info .other-info {
   font-size: 12px;
-  font-style: italic;
   font-weight: 400;
+  padding: 5px;
+  display: flex;
+  align-content: flex-start;
 }
 
 .other-info i {
@@ -149,28 +122,13 @@ export default {
 }
 
 @media only screen and (max-width: 768px) {
-  .contact-list .card-body .profile-img {
-    flex: 30%;
-    max-width: 30%;
-  }
-  .contact-list .card-body .info {
-    flex: 70%;
-    max-width: 70%;
-  }
-  .card-action .edit {
-    flex: 50%;
-    max-width: 50%;
-  }
-  .card-action .start-chat {
-    flex: 50%;
-    max-width: 50%;
-  }
+  .action-clmn .fbox {
+  flex-direction: column ;
+}
+
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
-  .card-action .start-chat {
-    flex: 50%;
-    max-width: 50%;
-  }
+
 }
 </style>
