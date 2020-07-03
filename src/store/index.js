@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        logeedInUser: { id: '' },
         contacts: [],
         selectedContact: {},
         selectedChat: {},
@@ -16,6 +17,9 @@ export default new Vuex.Store({
         },
     },
     mutations: {
+        setLoggedInUser(state, user) {
+            state.logeedInUser = user
+        },
         setSelectedContact(state, contact) {
             state.selectedContact = contact
         },
@@ -23,6 +27,9 @@ export default new Vuex.Store({
             state.selectedChat = chat
         },
         addNewContact(state, contact) {
+            if (!state.contacts.length) {
+                state.logeedInUser = contact
+            }
             state.contacts.push(contact)
         },
         updateContact(state, contact) {

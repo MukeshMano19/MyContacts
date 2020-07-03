@@ -1,14 +1,23 @@
 <template>
-  <div class="chat card">
+  <div class="chat card" :style="{'border': contacts.length > 1 ? '1px solid #ff4e5a' : 'none'}">
     <div class="flex-container" v-if="!selectedChat.id">
       <div>
         <img src="../assets/chat.jpg" width="300" />
-        <div>Select contact to start chating!</div>
+        <div>{{contacts.length == 1 ? 'Add one more contact to start chating!':'Select contact to start chating!'}}</div>
+        <div class="add-contact-btn mt-4" v-if="contacts.length == 1">
+          <button
+            style="border: 1px solid #ff4e5a"
+            class="btn my-2 my-sm-0"
+            type="submit"
+            data-toggle="modal"
+            data-target="#contactForm"
+          >Add contact</button>
+        </div>
       </div>
     </div>
     <div class="card-body" v-else>
       <div class="message-body">
-        <div style="font-weight:600">{{selectedChat.name}}</div>
+        <div style="font-weight:600;text-transform:uppercase">{{selectedChat.name}}</div>
         <div style="font-size:10px">{{selectedChat.phone}}</div>
         <div style="height:0.5px;background: #ff4e5a;width:100%" class="mt-1 mb-4"></div>
         <div class="conversions-body">
@@ -46,7 +55,7 @@ import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(["selectedChat"])
+    ...mapState(["selectedChat", "contacts"])
   }
 };
 </script>
@@ -54,7 +63,6 @@ export default {
 <style>
 .chat.card {
   height: 600px;
-  border: 1px solid #ff4e5a;
   border-radius: 0px;
 }
 
@@ -79,7 +87,7 @@ export default {
   flex: 100%;
 }
 
-.conversions-body{
+.conversions-body {
   height: 420px;
   overflow-y: auto;
 }

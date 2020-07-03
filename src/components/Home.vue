@@ -2,13 +2,14 @@
   <div class="container">
     <nav class="navbar">
       <span class="app-name navbar-brand mb-0 h1">
-         <i class="fas fa-address-book" style="font-size:16px;"></i>  
-        MyContacts</span>
+        <i class="fas fa-address-book" style="font-size:16px;"></i>
+        MyContacts
+      </span>
 
-      <form class="form-inline">
+      <form class="form-inline" v-if="contacts.length">
         <i class="fas fa-user" style="font-size:16px;color:#ff4e5a"></i>
         <div class="btn-group">
-          <button  class="btn btn-disabled">Mukesh Manoharan</button>
+          <button class="btn btn-disabled">{{logeedInUser.id ? logeedInUser.name : ''}}</button>
           <button
             type="button"
             class="btn btn-light dropdown-toggle dropdown-toggle-split"
@@ -19,26 +20,45 @@
             <span class="sr-only">Toggle Dropdown</span>
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <div v-for="(i,idx) in contacts" :key="i.id" v-show="logeedInUser.id != i.id">
+              <span class="dropdown-item users" @click="setLoggedInUser(i)">
+                <i class="fas fa-user-circle pr-2"></i>
+                {{i.name}}
+              </span>
+              <div
+                class="dropdown-divider"
+                v-if="contacts.length > 1 && contacts.length - 1 != idx"
+              ></div>
+            </div>
           </div>
         </div>
         <i class="fas fa-comments pl-4 navbar-chat" @click="openNav()"></i>
       </form>
     </nav>
-    <action-bar @setSearch="searchText = $event"></action-bar>
+    <action-bar @setSearch="searchText = $event" v-if="contacts.length > 1"></action-bar>
     <contact-form></contact-form>
 
     <div id="nav-drawer" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
       <chat></chat>
     </div>
-
-    <div class="main-content">
-      <contact-list class="list" :contacts="filteredContacts"></contact-list>
+    <div class="empty-handle" v-if="!contacts.length">
+        <div>
+          <img src="../assets/chat.jpg" width="300" />
+          <div>Add new contacts to explore!</div>
+          <div class="add-contact-btn mt-3">
+            <button
+              style="border: 1px solid #ff4e5a"
+              class="btn my-2 my-sm-0"
+              type="submit"
+              data-toggle="modal"
+              data-target="#contactForm"
+            >Add contact</button>
+        </div>
+      </div>
+    </div>
+    <div class="main-content" v-if="contacts.length">
+      <contact-list class="list" :contacts="filteredContacts" v-if="contacts.length > 1"></contact-list>
       <chat class="chat"></chat>
     </div>
   </div>
@@ -49,7 +69,7 @@ import ActionBar from "./ActionBar";
 import ContactList from "./ContactList";
 import ContactForm from "./ContactForm";
 import Chat from "./Chat";
-import {mapState} from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "Home",
@@ -61,10 +81,11 @@ export default {
   },
   data() {
     return {
-      searchText: ''
+      searchText: ""
     };
   },
   methods: {
+    ...mapMutations(["setLoggedInUser"]),
     openNav() {
       document.getElementById("nav-drawer").style.width = "330px";
     },
@@ -73,11 +94,14 @@ export default {
     }
   },
   computed: {
-    ...mapState(["contacts"]),
-    filteredContacts(){
+    ...mapState(["contacts", "logeedInUser"]),
+    filteredContacts() {
       return this.contacts.filter(c => {
-        return c.name.toLowerCase().match(this.searchText.toLowerCase());
-      })
+        return (
+          this.logeedInUser.id != c.id &&
+          c.name.toLowerCase().match(this.searchText.toLowerCase())
+        );
+      });
     }
   }
 };
@@ -96,6 +120,7 @@ export default {
 
 .main-content {
   display: flex;
+  justify-content: center;
   padding-bottom: 20px;
 }
 
@@ -115,8 +140,8 @@ export default {
   z-index: 1;
   top: 0;
   right: 0;
- background: #f1f0eb;
- overflow-x: hidden;
+  background: #f1f0eb;
+  overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
 }
@@ -144,6 +169,18 @@ export default {
 
 .navbar-chat {
   display: none;
+}
+
+.users {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.empty-handle {
+  display: flex;
+  height: 600px;
+  justify-content: center;
+  align-items: center;
 }
 
 @media only screen and (max-width: 768px) {
