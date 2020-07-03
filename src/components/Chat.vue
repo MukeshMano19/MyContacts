@@ -13,6 +13,14 @@
             data-target="#contactForm"
           >Add contact</button>
         </div>
+        <div class="close-nav-bar-btn mt-3">
+          <button
+            style="border: 1px solid #ff4e5a"
+            class="btn my-2 my-sm-0"
+            type="submit"
+            @click="$emit('closeNavBar')"
+          >Close</button>
+        </div>
       </div>
     </div>
     <div class="card-body" v-else>
@@ -20,19 +28,20 @@
         <div style="font-weight:600;text-transform:uppercase">{{selectedChat.name}}</div>
         <div style="font-size:10px">{{selectedChat.phone}}</div>
         <div style="height:0.5px;background: #ff4e5a;width:100%" class="mt-1 mb-4"></div>
-        <div class="conversions-body">
-          <div class="conversions" v-for="i in currentConversations" :key="i.timestamp">
+        <div id="chats" class="conversions-body">
+          <div  class="conversions" v-for="i in currentConversations" :key="i.timestamp">
             <div class="from" v-if="loggedInUser.id == i.userId">
               <div>
-              <span class="message">{{i.message}}</span>
-              <div class="time">{{getDateFormat(i.timestamp)}}</div>
+                <span class="message">{{i.message}}</span>
+                <div class="time">{{getDateFormat(i.timestamp)}}</div>
               </div>
             </div>
             <div class="to" v-else>
-<div>
-              <span class="message">{{i.message}}</span>
-              <div class="time">{{getDateFormat(i.timestamp)}}</div>
-              </div>            </div>
+              <div>
+                <span class="message">{{i.message}}</span>
+                <div class="time">{{getDateFormat(i.timestamp)}}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -57,6 +66,14 @@
             <i class="fas fa-paper-plane"></i>
           </button>
         </div>
+      </div>
+      <div class="close-nav-bar-btn input-group mb-3">
+        <button
+          class="btn btn-block"
+          type="button"
+          style="background: #ff4e5a;color:white"
+          @click="$emit('closeNavBar')"
+        >Close</button>
       </div>
     </div>
   </div>
@@ -85,30 +102,32 @@ export default {
       this.message = "";
     },
     getDateFormat(ts) {
-      var ts_ms = ts 
+      var ts_ms = ts;
       var date_ob = new Date(ts_ms);
       var hours = ("0" + date_ob.getHours()).slice(-2);
       var minutes = ("0" + date_ob.getMinutes()).slice(-2);
 
-      return  hours + ":" + minutes
+      return hours + ":" + minutes;
     }
   },
   computed: {
     ...mapState(["selectedChat", "contacts", "messagesHub", "loggedInUser"]),
-    ...mapGetters(["currentConversations"]),
+    ...mapGetters(["currentConversations"])
   }
 };
 </script>
 
 <style>
 .chat.card {
-  height: 600px;
+  height: 100%;
+  min-height: 600px;
   border-radius: 0px;
 }
 
 .flex-container {
   display: flex;
   height: 100%;
+  min-height: 600px;
   justify-content: center;
   align-items: center;
 }
@@ -137,9 +156,8 @@ export default {
   flex-wrap: wrap;
 }
 .conversions .time {
-font-size: 9px;
+  font-size: 9px;
   margin-top: 10px;
-
 }
 .conversions .to {
   flex: 100%;
@@ -167,5 +185,15 @@ font-size: 9px;
   padding: 10px;
   border-radius: 35px;
   border-bottom-right-radius: 0px;
+}
+
+.close-nav-bar-btn {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .close-nav-bar-btn {
+    display: unset;
+  }
 }
 </style>

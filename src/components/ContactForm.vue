@@ -83,15 +83,16 @@
               <button
                 type="button"
                 id="close-btn"
-                class="btn btn-outline-dark"
+                class="btn"
                 data-dismiss="modal"
+                style="background: #ff4e5a;color:white"
                 @click="close()"
               >Close</button>
 
               <button
                 type="submit"
                 class="btn"
-                style="border: 1px solid #ff4e5a;color:#ff4e5a"
+                style="background:green;color:white"
                 @click="save(contact)"
               >Save Contact</button>
             </div>

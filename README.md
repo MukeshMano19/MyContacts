@@ -1,4 +1,4 @@
-# my_contacts
+# My Contacts
 
 ## Project setup
 ```

@@ -39,12 +39,12 @@
     <contact-form></contact-form>
 
     <div id="nav-drawer" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" @click="closeNav()">&times;</a>
-      <chat class="chat"></chat>
+      <!-- <a href="javascript:void(0)" class="closebtn" >&times;</a> -->
+      <chat class="chat" @closeNavBar="closeNav()"></chat>
     </div>
     <div class="empty-handle" v-if="!contacts.length">
-        <div class="flex-container">
-          <div>
+      <div class="flex-container">
+        <div>
           <img src="../assets/chat.jpg" width="300" />
           <div>Add new contacts to explore!</div>
           <div class="add-contact-btn mt-3">
@@ -60,7 +60,12 @@
       </div>
     </div>
     <div class="main-content" v-if="contacts.length">
-      <contact-list class="list" @openDrawer="openNav()" :contacts="filteredContacts" v-if="contacts.length > 1"></contact-list>
+      <contact-list
+        class="list"
+        @openDrawer="openNav()"
+        :contacts="filteredContacts"
+        v-if="contacts.length > 1"
+      ></contact-list>
       <chat class="chat"></chat>
     </div>
   </div>
@@ -89,10 +94,12 @@ export default {
   methods: {
     ...mapMutations(["setLoggedInUser"]),
     openNav() {
-      document.getElementById("nav-drawer").style.width = "330px";
+      let nav = document.getElementById("nav-drawer");
+      if (nav) nav.style.width = "330px";
     },
     closeNav() {
-      document.getElementById("nav-drawer").style.width = "0";
+      let nav = document.getElementById("nav-drawer");
+      if (nav) nav.style.width = "0px";
     }
   },
   computed: {
@@ -145,7 +152,6 @@ export default {
   background: #f1f0eb;
   overflow-x: hidden;
   transition: 0.5s;
-  padding-top: 40px;
   display: none;
 }
 
@@ -197,7 +203,7 @@ export default {
     display: none;
   }
 
-  .sidenav{
+  .sidenav {
     display: unset;
   }
 }

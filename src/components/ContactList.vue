@@ -40,7 +40,11 @@
               >Edit</button>
             </div>
             <div class="start-chat ml-1">
-              <button type="submit" class="btn btn-sm btn-outline-light btn-clock" @click="startChat(i)">
+              <button
+                type="submit"
+                class="btn btn-sm btn-outline-light btn-block"
+                @click="startChat(i)"
+              >
                 Start Chat
                 <i class="fas fa-comments"></i>
               </button>
@@ -58,7 +62,7 @@ export default {
   props: {
     contacts: {
       type: Array
-    },
+    }
   },
   data() {
     return {};
@@ -74,7 +78,7 @@ export default {
         this.createNewConversation(user);
       }
       this.setSelectedChat(user);
-      this.$emit("openDrawer")
+      this.$emit("openDrawer");
     },
     ...mapMutations([
       "setSelectedContact",
@@ -146,21 +150,21 @@ export default {
 
 @media only screen and (max-width: 768px) {
   .contact-list .card-body .profile-img {
-  flex: 30%;
-  max-width: 30%;
-}
-.contact-list .card-body .info {
-  flex: 70%;
-  max-width: 70%;
-}
-.card-action .edit {
-  flex: 50%;
-  max-width: 50%;
-}
-.card-action .start-chat {
-  flex: 50%;
-  max-width: 50%;
-}
+    flex: 30%;
+    max-width: 30%;
+  }
+  .contact-list .card-body .info {
+    flex: 70%;
+    max-width: 70%;
+  }
+  .card-action .edit {
+    flex: 50%;
+    max-width: 50%;
+  }
+  .card-action .start-chat {
+    flex: 50%;
+    max-width: 50%;
+  }
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1200px) {
