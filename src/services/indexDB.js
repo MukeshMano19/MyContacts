@@ -99,9 +99,17 @@ const updateTable = function(tableName, payload) {
     })
 }
 
+const deleteObject = function(tableName, payload) {
+    dbPromise(function(db) {
+        var store = db.transaction(tableName, "readwrite").objectStore(tableName);
+        store.delete(payload.id)
+    })
+}
+
 export default {
     open,
     fetchData,
     saveData,
     updateTable,
+    deleteObject
 }

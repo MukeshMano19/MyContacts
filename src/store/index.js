@@ -104,6 +104,12 @@ export default new Vuex.Store({
             state.contacts.push(contact)
             idbs.saveData("contacts", contact)
         },
+        deleteContact(state, contact) {
+            var foundIndex = state.contacts.findIndex(x => x.id == contact.id);
+            state.contacts.splice(foundIndex, 1);
+
+            idbs.deleteObject("contacts", contact)
+        },
         updateContact(state, contact) {
             var foundIndex = state.contacts.findIndex(x => x.id == contact.id);
             state.contacts[foundIndex] = contact;

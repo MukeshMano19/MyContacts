@@ -6,6 +6,7 @@
           <tr>
             <th scope="col" style="max-width:40px;width:40px"></th>
             <th scope="col">Details</th>
+            <th class="action-clmn">Chat</th>
             <th class="action-clmn">Action</th>
           </tr>
         </thead>
@@ -34,6 +35,9 @@
               </div>
             </td>
             <td class="action-clmn">
+              <i class="fas fa-comments" @click="startChat(i)"></i>
+            </td>
+            <td class="action-clmn">
               <div class="fbox">
                 <div style="flex:50%">
               <i
@@ -44,7 +48,7 @@
               ></i>
               </div>
               <div style="flex:50%">
-              <i class="fas fa-comments" @click="startChat(i)"></i>
+              <i class="fas fa-trash-alt" @click="deleteContact(i)"></i>
               </div>
               </div>
             </td>
@@ -81,7 +85,8 @@ export default {
     ...mapMutations([
       "setSelectedContact",
       "setSelectedChat",
-      "createNewConversation"
+      "createNewConversation",
+      "deleteContact"
     ])
   }
 };
