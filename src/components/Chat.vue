@@ -1,17 +1,17 @@
 <template>
   <div class="chat card" :style="{'border': contacts.length > 1 ? '1px solid #563d7c' : 'none'}">
-    <div class="flex-container" v-if="!selectedChat.id">
+    <div class="flex-container" v-if="!selectedChat.id && !viewContact">
       <div>
         <img src="../assets/chat.jpg" width="300" />
         <div>{{contacts.length == 1 ? 'Add one more contact to start chating!':'Select contact to start chating!'}}</div>
-                <div class="add-contact-btn mt-3" v-if="contacts.length == 1">
-            <button
-              class="btn add-new-btn my-2 my-sm-0"
-              type="submit"
-              data-toggle="modal"
-              data-target="#contactForm"
-            >Add New Contact</button>
-          </div>
+        <div class="add-contact-btn mt-3" v-if="contacts.length == 1">
+          <button
+            class="btn add-new-btn my-2 my-sm-0"
+            type="submit"
+            data-toggle="modal"
+            data-target="#contactForm"
+          >Add New Contact</button>
+        </div>
         <div class="close-nav-bar-btn mt-3">
           <button
             style="border: 1px solid #ff4e5a"
@@ -22,13 +22,18 @@
         </div>
       </div>
     </div>
+
+    <div class="flex-container" v-if="viewContact">
+       <contact-info :contact="selectedChat"></contact-info> 
+    </div>
+
     <div class="card-body" v-else>
       <div class="message-body">
         <div class="cName">{{selectedChat.name}}</div>
         <div style="font-size:10px">{{selectedChat.phone}}</div>
         <div style="height:0.5px;background: #322348;width:100%" class="mt-1 mb-4"></div>
         <div id="chats" class="conversions-body">
-          <div  class="conversions" v-for="i in currentConversations" :key="i.timestamp">
+          <div class="conversions" v-for="i in currentConversations" :key="i.timestamp">
             <div class="from" v-if="loggedInUser.id == i.userId">
               <div>
                 <span class="message">{{i.message}}</span>
@@ -80,8 +85,12 @@
 
 <script>
 import { mapState, mapMutations, mapGetters } from "vuex";
+import ContactInfo from "./Contact"
 
 export default {
+  components: {
+    ContactInfo
+  },
   data() {
     return {
       message: ""
@@ -110,7 +119,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(["selectedChat", "contacts", "messagesHub", "loggedInUser"]),
+    ...mapState([
+      "selectedChat",
+      "contacts",
+      "messagesHub",
+      "loggedInUser",
+      "viewContact"
+    ]),
     ...mapGetters(["currentConversations"])
   }
 };
@@ -146,10 +161,10 @@ export default {
   flex: 100%;
 }
 
-.message-body .cName{
-  font-weight:600;
-  text-transform:uppercase;
-  color: "#322348"
+.message-body .cName {
+  font-weight: 600;
+  text-transform: uppercase;
+  color: "#322348";
 }
 
 .conversions-body {

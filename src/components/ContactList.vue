@@ -1,7 +1,7 @@
 <template>
   <div class="contact-list">
     <div class="table-responsive">
-      <table class="table table-striped table-bordered">
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th scope="col" style="max-width:40px;width:40px"></th>
@@ -11,11 +11,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="i in contacts" :key="i.id">
+          <tr v-for="i in contacts" :key="i.id" :class="selectedChat.id == i.id ? 'info-bg' : ''">
             <th>
               <img src="../assets/user.svg" width="30" />
             </th>
-            <td class="info">
+            <td class="info" @click="startChat(i);setContactView(true)">
               <div class="c-name">{{i.name}}</div>
               <div class="other-info">
                 <div>
@@ -35,7 +35,7 @@
               </div>
             </td>
             <td class="action-clmn">
-              <i class="fas fa-comments" @click="startChat(i)"></i>
+              <i class="fas fa-comments" @click="startChat(i);setContactView(false)"></i>
             </td>
             <td class="action-clmn">
               <div class="fbox">
@@ -86,7 +86,8 @@ export default {
       "setSelectedContact",
       "setSelectedChat",
       "createNewConversation",
-      "deleteContact"
+      "deleteContact",
+      "setContactView"
     ])
   }
 };
@@ -107,6 +108,13 @@ export default {
 }
 .action-clmn i {
   cursor: pointer;
+}
+
+.info {
+  cursor: pointer;
+}
+.info-bg {
+  background: #f1f0eb;
 }
 
 .info .c-name {

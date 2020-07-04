@@ -12,6 +12,7 @@ export default new Vuex.Store({
         selectedChat: {},
         messagesHub: [],
         currentConv: null,
+        viewContact: false,
         idbTables: ['messagesHub', 'contacts']
     },
     getters: {
@@ -103,6 +104,9 @@ export default new Vuex.Store({
         addNewContact(state, contact) {
             state.contacts.push(contact)
             idbs.saveData("contacts", contact)
+        },
+        setContactView(state, flag) {
+            state.viewContact = flag
         },
         deleteContact(state, contact) {
             var foundIndex = state.contacts.findIndex(x => x.id == contact.id);
