@@ -23,11 +23,12 @@
       </div>
     </div>
 
-    <div class="flex-container" v-if="viewContact">
+    <div v-if="contacts.length > 1">
+    <div class="flex-container" v-if="selectedChat.id && viewContact">
        <contact-info :contact="selectedChat"></contact-info> 
     </div>
 
-    <div class="card-body" v-else>
+    <div class="card-body" v-if="selectedChat.id && !viewContact">
       <div class="message-body">
         <div class="cName">{{selectedChat.name}}</div>
         <div style="font-size:10px">{{selectedChat.phone}}</div>
@@ -79,6 +80,7 @@
           @click="$emit('closeNavBar')"
         >Close</button>
       </div>
+    </div>
     </div>
   </div>
 </template>

@@ -11,11 +11,11 @@
       </div>
       <div class="form-group row">
         <label for="colFormLabelSm" class="header col-sm-6">Phone</label>
-        <div class="col-sm-6 value">{{contact.name}}</div>
+        <div class="col-sm-6 value">{{contact.phone}}</div>
       </div>
       <div class="form-group row">
         <label for="colFormLabelSm" class="header col-sm-6">Email</label>
-        <div class="col-sm-6 value">{{contact.name}}</div>
+        <div class="col-sm-6 value">{{contact.email}}</div>
       </div>
       <div class="form-group row">
         <label for="colFormLabelSm" class="header col-sm-6">Company</label>
